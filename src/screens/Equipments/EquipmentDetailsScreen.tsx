@@ -7,7 +7,7 @@ import { FlatList } from 'react-native';
 
 interface Post {
   id: number;
-  nom: string;
+  nom_client: string;
   email: string;
 }
 
@@ -16,7 +16,7 @@ const EquipmentDetailsScreen: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    axios.get('http://192.168.1.70/api/api.php')
+    axios.get('http://192.168.1.66/api/clients.php')
       .then(response => {
         setPosts(response.data);
         console.log(response.data);
@@ -36,7 +36,7 @@ const EquipmentDetailsScreen: React.FC = () => {
       keyExtractor={(item) => item.id.toString()}
       renderItem={({ item }) => (
         <View>
-          <Text>{item.nom}</Text>
+          <Text>{item.nom_client}</Text>
           <Text>{item.email}</Text>
         </View>
       )}

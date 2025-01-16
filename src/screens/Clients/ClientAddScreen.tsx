@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { apiClient } from '../../services/api';
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import api from '../../services/api';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -25,8 +25,11 @@ const ClientAddScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleAddClient = async () => {
     try {
-      await apiClient.createClient({ nom_client, societe, telephone, email, adresse });
+      await api.createClient({ nom_client, societe, telephone, email, adresse });
+      //Optionnel: Afficher une alerte
+      Alert.alert("Succès", "Utilisateur ajouté avec succès !");
       navigation.goBack();
+      
     } catch (err) {
       setError("Erreur lors de l'ajout du client.");
     }

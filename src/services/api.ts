@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { Alert } from 'react-native';
 
 
-const API_BASE_URL = 'http://192.168.1.64/api/'; // URL de votre API
+const API_BASE_URL = 'http://192.168.1.66/api/'; // URL de votre API
 
 // Définition du type pour les données d'équipement
 export interface Equipment {
@@ -35,7 +35,8 @@ export interface Client {
 
 
 const api = {
-  fetchClients: async (): Promise<Client[]> => {
+  fetchClients:
+  async (): Promise<Client[]> => {
     try {
       const response = await axios.get<Client[]>(API_BASE_URL + 'clients');
       return response.data;
@@ -46,9 +47,11 @@ const api = {
       throw error;
     }
   },
+  
   fetchClientDetails: async (clientId: string): Promise<Client> => {
     try {
       const response = await axios.get<Client>(API_BASE_URL + `clients/${clientId}`);
+     
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
