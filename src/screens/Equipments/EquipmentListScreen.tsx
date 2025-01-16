@@ -7,7 +7,8 @@ import { RouteProp } from '@react-navigation/native';
 type RootStackParamList = {
   EquipmentList: undefined;
   EquipmentDetails: { id: string };
-  EquipmentForm: undefined;
+  EquipmentForm: { id: string, name: string, type: string };
+  EquipmentAdd: undefined;
 };
 
 type EquipmentListScreenNavigationProp = StackNavigationProp<
@@ -34,7 +35,9 @@ const EquipmentListScreen: React.FC<Props> = ({ navigation }) => {
     { id: '11', name: 'Transformer K', type: 'Electrical' },
     { id: '12', name: 'Filter L', type: 'Hydraulic' }
   ];
-
+  const handleEdit = (equipment: { id: string, name: string, type: string }) => {
+    navigation.navigate('EquipmentForm', equipment);
+  };
   return (
     <View style={styles.container}>
       <FlatList
@@ -43,14 +46,16 @@ const EquipmentListScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.title}>{item.name}</Text>
+            <Text>{item.type}</Text>
             <Button
               title="View Details"
               onPress={() => navigation.navigate('EquipmentDetails', { id: item.id })}
             />
+            <Button title="Edit" onPress={() => handleEdit(item)} />
           </View>
         )}
       />
-      <Button title="Add Equipment" onPress={() => navigation.navigate('EquipmentForm')} />
+      <Button title="Add Equipment" onPress={() => navigation.navigate('EquipmentAdd')} />
     </View>
   );
 };
