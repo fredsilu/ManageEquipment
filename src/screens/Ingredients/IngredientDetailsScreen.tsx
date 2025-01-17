@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { api, Ingredient } from '../../services/api';
-
+import api  from '../../services/api';
+import { Ingredient } from '../../types/types';
 import { RouteProp } from '@react-navigation/native';
 
 type IngredientDetailsScreenProps = {

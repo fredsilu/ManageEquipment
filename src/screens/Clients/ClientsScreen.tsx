@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import api, { Client } from '../../services/api';
+import api from '../../services/api';
+import { Client } from '../../types/types';
 import { NavigationProp } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 
 
 interface Props {
@@ -30,23 +31,24 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
     loadClients();
   }, []);
 
-  
-
-
   useEffect(() => {
     navigation.setOptions({
       title: 'Liste des Clients',
+      headerStyle: {
+      backgroundColor: '#1976d2', // blue background color
+      },
+      headerTintColor: '#fff', // white title color
       headerRight: () => (
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity onPress={() => navigation.navigate('ClientAdd')}>
-            <Icon name="add" size={25} color="#000" style={{ marginRight: 15 }} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
-            
-            /* Logic for search functionality */}}>
-            <Icon name="search" size={25} color="#000" style={{ marginRight: 15 }} />
-          </TouchableOpacity>
-        </View>
+      <View style={{ flexDirection: 'row' }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Ajouter Client')}>
+        <Ionicons name="add" size={25} color="#fff" style={{ marginRight: 15 }} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+        
+        /* Logic for search functionality */}}>
+        <Ionicons name="search" size={25} color="#fff" style={{ marginRight: 15 }} />
+        </TouchableOpacity>
+      </View>
       ),
     });
   }, [navigation]);
@@ -75,7 +77,7 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={({ item }) => (
             <TouchableOpacity
             style={styles.clientContainer}
-            onPress={() => navigation.navigate('ClientDetailsScreen', { clientId: item.id })}
+            onPress={() => navigation.navigate('Details Client', { clientId: item.id })}
             >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
@@ -85,13 +87,21 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
               <View>
               <Text style={styles.clientName}>Nom: {item.nom_client}</Text>
               <Text style={styles.clientText}>id: {item.id}</Text>
-              <Text style={styles.clientText}>Société: {item.societe}</Text>
+                <Text style={styles.clientSociete}>Société: {item.societe}</Text>
               <Text style={styles.clientText}>Téléphone: {item.telephone}</Text>
               </View>
             </View>
             </TouchableOpacity>
         )}
       />
+
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('Ajouter Client')}
+      >
+        <Text style={styles.addButtonText}>Ajouter Client</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -128,7 +138,7 @@ const styles = StyleSheet.create({
   clientSociete: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#003d33',
+    color: '#09268F', // bleu-vert color
   },
   clientImage: {
     width: 50,
@@ -144,15 +154,35 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   addButton: {
-    backgroundColor: '#d32f2f',
+    backgroundColor: '#1976d2', // blue color
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 16,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 3,
   },
   addButtonText: {
     color: '#fff',
     fontSize: 16,
+    fontFamily: 'cursive',
+    marginRight: 10,
+  },
+
+  addButtonHover: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  addButtonActive: {
+    backgroundColor: '#1565c0', // darker blue color
   },
 });
 

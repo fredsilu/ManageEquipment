@@ -15,10 +15,10 @@ const DashboardScreen = ({ navigation }: { navigation: NavigationProp<any> }) =>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('Liste des clients')}
+                    onPress={() => navigation.navigate('Clients')}
                     activeOpacity={0.7}
                 >
-                    <Text style={styles.buttonText}>Go to Client List</Text>
+                    <Text style={styles.buttonText}>Les clients</Text>
                     <View style={styles.buttonIcon}>
                         <Text style={styles.buttonText}>→</Text>
                     </View>
@@ -27,10 +27,10 @@ const DashboardScreen = ({ navigation }: { navigation: NavigationProp<any> }) =>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('IngredientsList')}
+                    onPress={() => navigation.navigate('Ingredients')}
                     activeOpacity={0.7}
                 >
-                    <Text style={styles.buttonText}>Go to Ingredient List</Text>
+                    <Text style={styles.buttonText}>Les ingrédients</Text>
                     <View style={styles.buttonIcon}>
                         <Text style={styles.buttonText}>→</Text>
                     </View>
@@ -39,12 +39,12 @@ const DashboardScreen = ({ navigation }: { navigation: NavigationProp<any> }) =>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('PlatList')}
+                    onPress={() => navigation.navigate('Plats')}
                     activeOpacity={0.7}
                 >
-                    <Text style={styles.buttonText}>Go to Plat List</Text>
+                    <Text style={styles.buttonText}>Les plats</Text>
                     <View style={styles.buttonIcon}>
-                        <Text style={styles.buttonText}>→</Text>
+                        <Text style={styles.buttonText}> → </Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -1,38 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import { Alert } from 'react-native';
-
+import { Client } from '../types/types';
+import { Ingredient } from '../types/types';
 
 const API_BASE_URL = 'http://192.168.1.66/api/'; // URL de votre API
-
-// Définition du type pour les données d'équipement
-export interface Equipment {
-  id: string;
-  name: string;
-  model: string;
-  location: string;
-  spectech: string;
-  reference: string;
-}
-
-export interface Ingredient {
-  id: string;
-  categorie: string;
-  nom_ingredient: string;
-  fournisseur: string;
-  unite: string;
-  cout_unitaire: number;
-}
-
-
-export interface Client {
-  id: string;
-  nom_client: string;
-  societe: string;
-  telephone: string;
-  email: string;
-  adresse: string;
-  photoUrl: string; // Add this line
-}
 
 
 const api = {
@@ -148,49 +119,6 @@ const api = {
     }
   },
 
-  fetchEquipments: async (): Promise<Equipment[]> => {
-    try {
-      const response = await axios.get<Equipment[]>(API_BASE_URL + 'api.php');
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Erreur fetchEquipments:", axiosError.message);
-      Alert.alert("Erreur de chargement", axiosError.message);
-      throw error;
-    }
-  },
-  createEquipment: async (equipmentData: Omit<Equipment, 'id'>): Promise<Equipment> => {
-    try {
-      const response = await axios.post<Equipment>(API_BASE_URL + 'api.php', equipmentData);
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Erreur createEquipment:", axiosError.message);
-      Alert.alert("Erreur de création", axiosError.message);
-      throw error;
-    }
-  },
-  updateEquipment: async (equipmentData: Equipment): Promise<Equipment> => {
-    try {
-      const response = await axios.put<Equipment>(API_BASE_URL + `api.php?id=${equipmentData.id}`, equipmentData);
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Erreur updateEquipment:", axiosError.message);
-      Alert.alert("Erreur de mise à jour", axiosError.message);
-      throw error;
-    }
-  },
-  deleteEquipment: async (equipmentId: string): Promise<void> => {
-    try {
-      await axios.delete(API_BASE_URL + `api.php?id=${equipmentId}`);
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Erreur deleteEquipment:", axiosError.message);
-      Alert.alert("Erreur de suppression", axiosError.message);
-      throw error;
-    }
-  },
 
   fetchCommandes: async (): Promise<any[]> => {
     try {
@@ -248,7 +176,7 @@ const api = {
   },
   fetchDishes: async (): Promise<any[]> => {
     try {
-      const response = await axios.get<any[]>(API_BASE_URL + 'dishes');
+      const response = await axios.get<any[]>(API_BASE_URL + 'plats');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;

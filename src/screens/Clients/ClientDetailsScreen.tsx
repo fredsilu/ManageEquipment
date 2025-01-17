@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 import { RouteProp } from '@react-navigation/native';
+import { ReactNode } from 'react';
+
 
 
 interface Client {
@@ -85,19 +87,64 @@ const ClientDetailsScreen: React.FC = () => {
   );
 };
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#f0f0f0',
   },
   clientContainer: {
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    marginVertical: 8,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+    transform: [{ perspective: 1000 }],
   },
   clientText: {
     fontSize: 16,
+    color: '#333',
   },
 });
+
+
+
+const AnimatedClientContainer: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const animatedValue = new Animated.Value(1);
+
+  const handlePressIn = () => {
+    Animated.spring(animatedValue, {
+      toValue: 0.95,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(animatedValue, {
+      toValue: 1,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={1}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+    >
+      <Animated.View style={[styles.clientContainer, { transform: [{ scale: animatedValue }] }]}>
+        {children}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+};
+
+export { styles, AnimatedClientContainer };
 
 export default ClientDetailsScreen;

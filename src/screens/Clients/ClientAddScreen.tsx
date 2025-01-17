@@ -25,7 +25,7 @@ const ClientAddScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleAddClient = async () => {
     try {
-      await api.createClient({ nom_client, societe, telephone, email, adresse });
+      await api.createClient({ nom_client, societe, telephone, email, adresse, photoUrl: '' });
       //Optionnel: Afficher une alerte
       Alert.alert("Succès", "Utilisateur ajouté avec succès !");
       navigation.goBack();
@@ -80,11 +80,16 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    height: 50,
+    borderColor: 'lightblue',
     borderWidth: 1,
     marginBottom: 12,
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
+    shadowOpacity: 0.6,
+    shadowRadius: 2,
+    elevation: 3,
+    borderRadius: 7,
+    backgroundColor: 'white',
   },
   error: {
     color: 'red',

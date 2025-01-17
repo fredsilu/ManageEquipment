@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { api, Ingredient } from '../../services/api';
+import api from '../../services/api';
+import { Ingredient } from  '../../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 
@@ -59,13 +60,14 @@ const IngredientsListScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.ingredientContainer}
-            onPress={() => navigation.navigate('IngredientDetails', { ingredientId: item.id })}
+            onPress={() => navigation.navigate('IngredientDetails', { ingredientId: item.id.toString() })}
           >
-            <Text style={styles.ingredientText}>Catégorie: {item.categorie}</Text>
-            <Text style={styles.ingredientText}>Nom: {item.nom_ingredient}</Text>
+            
+            <Text style={styles.ingredientNameText}> {item.nom_ingredient}</Text>
+            <Text style={styles.ingredientText}>{item.categorie}</Text>
             <Text style={styles.ingredientText}>Fournisseur: {item.fournisseur}</Text>
             <Text style={styles.ingredientText}>Unité: {item.unite}</Text>
-            <Text style={styles.ingredientText}>Coût unitaire: {item.cout_unitaire}</Text>
+            <Text style={styles.ingredientCoutText}>Coût unitaire: {item.cout_unitaire} $</Text>
           </TouchableOpacity>
         )}
       />
@@ -83,9 +85,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
-  ingredientText: {
-    fontSize: 16,
+  ingredientNameText: {
+    fontSize: 20,
+    color: 'blue',
+    fontWeight: 'bold',
   },
+  ingredientText: {
+    fontSize: 14,
+  },
+  ingredientCoutText: {
+    fontSize: 15,
+    color: '#3BB700',
+    fontWeight: 'bold',
+  },
+
+  
 });
 
 export default IngredientsListScreen;

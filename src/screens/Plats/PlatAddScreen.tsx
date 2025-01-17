@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import api from '../../services/api';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -112,20 +111,9 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
             />
 
             <Text>Ingrédients</Text>
-            <Picker
-                selectedValue={null}
-                onValueChange={(itemValue) => {
-                    if (itemValue !== null) {
-                        addIngredientToPlat(parseInt(itemValue));
-                    }
-                }}
-                style={styles.picker}
-            >
-                <Picker.Item label="Sélectionner un ingrédient" value={null} />
-                {ingredients.map((ingredient) => (
-                    <Picker.Item key={ingredient.id} label={ingredient.nom_ingredient} value={ingredient.id} />
-                ))}
-            </Picker>
+            <View style={styles.ingredientContainer}>
+                <Text>Ingrédient</Text>
+                <Text>Quantité</Text>
             {platIngredients.map((platIngredient) => (
                 <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
                     <Text>
@@ -140,6 +128,7 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
                     />
                 </View>
             ))}
+            </View>
 
 
             <TextInput

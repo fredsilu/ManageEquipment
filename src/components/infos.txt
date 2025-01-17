@@ -5,3 +5,404 @@ de couleur au clic et une animation de transition douce
 
 
 
+
+Voici une proposition de cahier des charges pour la création d'une application React Native avec Expo pour un service traiteur, intégrant les fonctionnalités que vous avez mentionnées.
+
+**1. Introduction**
+
+Ce document définit les spécifications pour le développement d'une application mobile multiplateforme (iOS et Android) en React Native avec Expo, destinée à la gestion d'un service traiteur. L'application permettra la gestion des ingrédients, des plats (composés d'ingrédients), des clients et des commandes.
+
+**2. Objectifs**
+
+*   Fournir une interface intuitive et conviviale pour la gestion des différents aspects du service traiteur.
+*   Simplifier le processus de création et de modification des plats.
+*   Faciliter la gestion des clients et de leurs commandes.
+*   Calculer automatiquement le prix des plats et des commandes.
+*   Offrir une application performante et stable sur les plateformes iOS et Android.
+
+**La structure de données (Base de données distante)**
+
+*   **Ingrédients :**
+    *   `id` (int, clé primaire)
+    *   `categorie` (string)
+    *   `nom_ingredient` (string)
+    *   `fournisseur` (string)
+    *   `cout_unitaire` (float)
+    *   `unite` (string)
+*   **Plats :**
+    *   `id` (int, clé primaire)
+    *   `nom` (string)
+    *   `description` (text)
+    *   `prix` (float)
+    *   `image` (string, URL de l'image)
+*   **PlatIngredients (table de liaison entre Plats et Ingrédients) :**
+    *   `plat_id` (int, clé étrangère vers Plats)
+    *   `ingredient_id` (int, clé étrangère vers Ingrédients)
+    *   `quantite` (float)
+    *   `unite_quantite` (string)
+*   **Clients :**
+    *   `id` (int, clé primaire)
+    *   `nom_client` (string)
+    *   `societe` (string)
+    *   `telephone` (string)
+    *   `email` (string)
+    *   `adresse` (string)
+*   **Commandes :**
+    *   `id` (int, clé primaire)
+    *   `client_id` (int, clé étrangère vers Clients)
+    *   `date_commande` (datetime)
+    *   `date_evenement` (datetime)
+    *   `nbr_pers` (int)   
+    *   `type_menu` (string) 
+    *   `prix_total` (float)
+*   **CommandePlats (table de liaison entre Commandes et Plats) :**
+    *   `commande_id` (int, clé étrangère vers Commandes)
+    *   `plat_id` (int, clé étrangère vers Plats)
+    *   `quantite` (int)
+
+**3. Fonctionnalités**
+
+**3.1 Gestion des ingrédients**
+
+*   **Ajout d'ingrédients :** Nom, prix unitaire, unité de mesure (kg, g, L, mL, unité).
+*   **Modification d'ingrédients :** Modification des informations existantes.
+*   **Suppression d'ingrédients :** Suppression des ingrédients (avec confirmation pour éviter les suppressions accidentelles).
+*   **Liste des ingrédients :** Affichage paginé ou avec une barre de recherche pour faciliter la navigation.
+
+**3.2 Gestion des plats**
+
+*   **Création de plats :** Nom, description, image (optionnelle), liste d'ingrédients avec leur quantité (en utilisant l'unité de mesure de l'ingrédient), calcul automatique du prix du plat (somme des prix des ingrédients * quantité).
+*   **Modification de plats :** Modification des informations existantes.
+*   **Suppression de plats :** Suppression des plats (avec confirmation).
+*   **Liste des plats :** Affichage avec possibilité de filtrer par catégorie (optionnel) et/ou de rechercher par nom.
+*   **Détails d'un plat :** Affichage de toutes les informations du plat, y compris la liste des ingrédients et le prix calculé.
+
+**3.3 Gestion des clients**
+
+*   **Ajout de clients :** Nom, prénom, société (optionnel), téléphone, email, adresse.
+*   **Modification de clients :** Modification des informations existantes.
+*   **Suppression de clients :** Suppression des clients (avec confirmation).
+*   **Liste des clients :** Affichage avec possibilité de recherche par nom ou prénom.
+
+**3.4 Gestion des commandes**
+
+*   **Création de commandes :** Sélection du client (par nom ou ID), sélection des plats (avec leur quantité), saisie de la date de la commande et de la date de l'événement, calcul automatique du prix total de la commande (somme des prix des plats * quantité).
+*   **Modification de commandes :** Modification des informations existantes (sauf si la commande est marquée comme "livrée" ou "annulée").
+*   **Annulation de commandes :** Possibilité d'annuler une commande (avec confirmation).
+*   **Liste des commandes :** Affichage avec possibilité de filtrer par date, statut (en cours, livrée, annulée) et/ou client.
+*   **Détails d'une commande :** Affichage de toutes les informations de la commande, y compris la liste des plats, le prix total, les informations du client et les dates.
+
+**4. Architecture technique**
+
+*   **Langage :** JavaScript (TypeScript recommandé).
+*   **Framework :** React Native avec Expo.
+*   **Gestion des données :**
+    *   **Stockage local :** AsyncStorage (pour les données persistantes sur l'appareil, comme les préférences utilisateur).
+    *   **Base de données distante (recommandé) :** Firebase Realtime Database, Cloud Firestore, Supabase, ou un autre service de backend de votre choix. Cela permettra la synchronisation des données entre plusieurs appareils et une meilleure gestion des données.
+*   **Gestion des états :** Context API, Redux ou Zustand (pour les applications plus complexes).
+*   **Navigation :** React Navigation.
+*   **Librairies UI :** React Native Paper, React Native Elements, ou une autre librairie de composants UI de votre choix.
+*   **Appels API :** Axios ou Fetch API.
+
+**5. Interface utilisateur (UI)**
+
+*   Design moderne et intuitif, adapté aux plateformes iOS et Android.
+*   Navigation claire et facile entre les différentes sections de l'application.
+*   Utilisation de composants réutilisables pour une meilleure maintenabilité.
+*   Gestion des erreurs et des états de chargement pour une meilleure expérience utilisateur.
+
+**6. Tests**
+
+*   Tests unitaires pour les fonctions et les composants.
+*   Tests d'intégration pour les flux utilisateurs.
+*   Tests sur des appareils physiques et des émulateurs.
+
+**7. Déploiement**
+
+*   Publication sur les stores d'applications (App Store et Google Play).
+*   Utilisation des outils de déploiement d'Expo (eas build).
+
+**8. Maintenance**
+
+*   Maintenance corrective et évolutive de l'application.
+*   Support technique.
+
+**9. Contraintes**
+
+*   Délais de développement.
+*   Budget.
+
+**10. Livrables**
+
+*   Code source de l'application.
+*   Documentation technique.
+*   Documentation utilisateur.
+
+
+
+
+
+Voici la première étape du code de l'application React Native avec Expo et TypeScript, en se concentrant sur la configuration initiale, la navigation et les types. J'utiliserai `react-navigation` pour la navigation et mettrai en place une structure de base pour les écrans et les services.
+
+**1. Initialisation du projet Expo (TypeScript) :**
+
+```bash
+expo init --template expo-template-blank-typescript traiteur-app
+cd traiteur-app
+```
+
+**2. Installation des dépendances :**
+
+```bash
+npm install @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context
+# ou avec yarn
+yarn add @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context
+expo install react-native-gesture-handler react-native-reanimated react-native-screens react-native-safe-area-context @react-native-async-storage/async-storage
+```
+
+**3. Structure du projet (création des dossiers et fichiers) :**
+
+```
+traiteur-app/
+├── App.tsx             // Point d'entrée de l'application
+├── app.json           // Configuration Expo
+├── package.json       // Dépendances
+├── services/
+│   └── api.ts         // Service pour les appels API
+├── components/
+│   └── ... autres composants
+├── screens/
+│   ├── IngredientsScreen.tsx
+│   ├── PlatsScreen.tsx
+│   ├── ClientsScreen.tsx
+│   ├── CommandesScreen.tsx
+│   └── HomeScreen.tsx // Ecran d'accueil
+├── navigation/
+│   └── AppNavigator.tsx // Navigation
+├── types/
+│   └── types.ts // Définition des types
+└── ... autres fichiers
+```
+
+**4. `types/types.ts` (Définition des interfaces TypeScript) :**
+
+```typescript
+export interface Ingredient {
+  id: number;
+  categorie: string;
+  nom_ingredient: string;
+  fournisseur: string;
+  cout_unitaire: number;
+  unite: string;
+}
+
+export interface Plat {
+  id: number;
+  nom: string;
+  description: string;
+  prix: number;
+  image?: string; // Optionnelle
+}
+
+export interface PlatIngredient {
+  plat_id: number;
+  ingredient_id: number;
+  quantite: number;
+  unite_quantite: string;
+}
+
+export interface Client {
+  id: number;
+  nom_client: string;
+  societe?: string; // Optionnelle
+  telephone: string;
+  email: string;
+  adresse: string;
+}
+
+export interface Commande {
+    id: number;
+    client_id: number;
+    date_commande: string;
+    date_evenement: string;
+    nbr_pers: number;
+    type_menu: string;
+    prix_total: number;
+}
+
+export interface CommandePlat {
+    commande_id: number;
+    plat_id: number;
+    quantite: number;
+}
+```
+
+**5. `navigation/AppNavigator.tsx` (Configuration de la navigation) :**
+
+```typescript
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import IngredientsScreen from '../screens/IngredientsScreen';
+import PlatsScreen from '../screens/PlatsScreen';
+import ClientsScreen from '../screens/ClientsScreen';
+import CommandesScreen from '../screens/CommandesScreen';
+import HomeScreen from '../screens/HomeScreen'
+
+const Stack = createNativeStackNavigator();
+
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Accueil' }} />
+        <Stack.Screen name="Ingredients" component={IngredientsScreen} options={{ title: 'Ingrédients' }} />
+        <Stack.Screen name="Plats" component={PlatsScreen} options={{ title: 'Plats' }} />
+        <Stack.Screen name="Clients" component={ClientsScreen} options={{ title: 'Clients' }} />
+        <Stack.Screen name="Commandes" component={CommandesScreen} options={{ title: 'Commandes' }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export default AppNavigator;
+```
+
+**6. `screens/HomeScreen.tsx` (Écran d'accueil) :**
+
+```typescript
+import React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+
+interface HomeScreenProps {
+    navigation: any;
+}
+
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+    return (
+        <View style={styles.container}>
+            <Text>Bienvenue dans l'application de gestion de traiteur !</Text>
+            <Button
+                title="Gérer les ingrédients"
+                onPress={() => navigation.navigate('Ingredients')}
+            />
+            <Button
+                title="Gérer les plats"
+                onPress={() => navigation.navigate('Plats')}
+            />
+            <Button
+                title="Gérer les clients"
+                onPress={() => navigation.navigate('Clients')}
+            />
+            <Button
+                title="Gérer les commandes"
+                onPress={() => navigation.navigate('Commandes')}
+            />
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20
+    }
+})
+
+export default HomeScreen;
+```
+
+**7. `App.tsx` (Point d'entrée de l'application) :**
+
+```typescript
+import React from 'react';
+import AppNavigator from './navigation/AppNavigator';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+const App = () => {
+  return (
+    <SafeAreaProvider>
+        <AppNavigator />
+    </SafeAreaProvider>
+  );
+};
+
+export default App;
+```
+
+**8. `services/api.ts` (Début du service API) :**
+
+```typescript
+import { Ingredient, Plat, Client, Commande } from '../types/types';
+
+const API_BASE_URL = 'VOTRE_URL_API'; // À remplacer
+
+const api = {
+    fetchIngredients: async (): Promise<Ingredient[]> => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/ingredients`);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des ingrédients :", error);
+            throw error;
+        }
+    },
+    addIngredient: async (ingredient: Omit<Ingredient, 'id'>): Promise<Ingredient> => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/ingredients`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(ingredient),
+            });
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Erreur lors de l'ajout d'ingrédient :", error);
+            throw error;
+        }
+    },
+    fetchPlats: async (): Promise<Plat[]> => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/plats`);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error("Erreur lors de la récupération des plats :", error);
+            throw error;
+        }
+    },
+    addPlat: async (plat: Omit<Plat, 'id'>): Promise<Plat> => {
+        try {
+            const response = await fetch(`${API_BASE_URL}/plats`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(plat),
+            });
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Erreur lors de l'ajout du plat :", error);
+            throw error;
+        }
+    },
+    fetchClients: async (): Promise<Client[]> => {
+        try {
+            const response = await fetch(`${API_BASE_
+
