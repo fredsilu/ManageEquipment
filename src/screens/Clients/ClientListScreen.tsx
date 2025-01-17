@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import api, { Client } from '../../services/api';
 import { NavigationProp } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 interface Props {
   navigation: NavigationProp<any>;
@@ -11,6 +13,7 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
 
   useEffect(() => {
     const loadClients = async () => {
@@ -26,6 +29,27 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
 
     loadClients();
   }, []);
+
+  
+
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: 'Liste des Clients',
+      headerRight: () => (
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('ClientAdd')}>
+            <Icon name="add" size={25} color="#000" style={{ marginRight: 15 }} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+            
+            /* Logic for search functionality */}}>
+            <Icon name="search" size={25} color="#000" style={{ marginRight: 15 }} />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   if (loading) {
     return (
@@ -97,12 +121,12 @@ const styles = StyleSheet.create({
     color: '#004d40',
   },
   clientName: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#00251a',
   },
   clientSociete: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#003d33',
   },

@@ -19,6 +19,7 @@ const Stack = createStackNavigator();
 const ClientStack = () => (
   <Stack.Navigator>
    
+   <Stack.Screen name="Tableau de bord" component={DashboardScreen} />
     <Stack.Screen name="Liste des clients" component={ClientListScreen} />
     <Stack.Screen name="ClientDetailsScreen" component={ClientDetailsScreen} />
     <Stack.Screen name="Liste des équipements" component={EquipmentListScreen} />

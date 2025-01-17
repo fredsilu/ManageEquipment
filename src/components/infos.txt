@@ -1,0 +1,7 @@
+Le style de ces boutons doit être en 3D avec ombres, dégradé, moderne, 
+aux bords arrondis avec un police cursive avec une icône de flèche blanche 
+à droite, légère ombre au survol et une animation au survol, avec changement 
+de couleur au clic et une animation de transition douce
+
+
+
