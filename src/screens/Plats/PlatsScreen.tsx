@@ -34,7 +34,7 @@ const PlatsListScreen: React.FC<Props> = ({ navigation }) => {
             title: 'Liste des Plats',
             headerRight: () => (
                 <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Ajouter Plat')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('AjouterPlat')}>
                         <Ionicons name="add" size={25} color="#000" style={{ marginRight: 15 }} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {
@@ -88,7 +88,7 @@ const PlatsListScreen: React.FC<Props> = ({ navigation }) => {
                 )}
             />
 
-            <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('Ajouter Plat')}>
+            <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AjouterPlat')}>
                 <Text style={styles.addButtonText}>Ajouter un Plat</Text>
             </TouchableOpacity>
         </View>

@@ -4,17 +4,9 @@ import { useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 import { RouteProp } from '@react-navigation/native';
 import { ReactNode } from 'react';
+import {Client} from '../../types/types'
 
 
-
-interface Client {
-  id: string;
-  nom_client: string;
-  societe: string;
-  telephone: string;
-  email: string;
-  adresse: string;
-}
 
 const ClientDetailsScreen: React.FC = () => {
   const [client, setClient] = useState<Client>();
@@ -49,7 +41,7 @@ const ClientDetailsScreen: React.FC = () => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text>Loading...</Text>
+        <Text>Chargement...</Text>
       </View>
     );
   }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -21,35 +23,61 @@ import IngredientDetailsScreen from '../screens/Ingredients/IngredientDetailsScr
 import PlatAddScreen from '../screens/Plats/PlatAddScreen';
 import PlatsScreen from '../screens/Plats/PlatsScreen';
 
+import test from '../screens/Plats/test';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
+type ClientStackParamList = {
+  TableauBord: undefined;
+  Clients: undefined;
+  DetailsClient: undefined;
+  AjouterClient: undefined;
+  'Liste des equipements': undefined;
+  EquipmentDetails: undefined;
+  EquipmentAdd: undefined;
+  Ingredients: undefined;
+  AjouterIngredient: undefined;
+  DetailsIngredient: { ingredientId: string };
+  AjouterPlat: undefined;
+  Plats: undefined;
+};
+
 const ClientStack = () => (
-  <Stack.Navigator>
-   
-   <Stack.Screen name="Tableau de bord" component={DashboardScreen} />
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+<Stack.Screen name="test" component={test} />
+
+    <Stack.Screen name="TableauBord" component={DashboardScreen} />
 
     <Stack.Screen name="Clients" component={ClientsScreen} />
-    <Stack.Screen name="Details Client" component={ClientDetailsScreen} />
-    <Stack.Screen name="Ajouter Client" component={ClientAddScreen} />
+    <Stack.Screen name="DetailsClient" component={ClientDetailsScreen} />
+    <Stack.Screen name="AjouterClient" component={ClientAddScreen} />
 
     <Stack.Screen name="Liste des equipements" component={EquipmentListScreen} />
     <Stack.Screen name="EquipmentDetails" component={EquipmentDetailsScreen} />
     <Stack.Screen name="EquipmentAdd" component={EquipmentAddScreen} />
 
     <Stack.Screen name="Ingredients" component={IngredientsScreen} />
-    <Stack.Screen name="Ajouter Ingredient" component={IngredientAddScreen} />
-    <Stack.Screen name="Details Ingredient" component={IngredientDetailsScreen} />
-    
+    <Stack.Screen name="AjouterIngredient" component={IngredientAddScreen} />
+    <Stack.Screen name="DetailsIngredient" component={IngredientDetailsScreen} />
 
-    <Stack.Screen name="Ajouter Plat" component={PlatAddScreen} />
+
+    <Stack.Screen name="AjouterPlat" component={PlatAddScreen} />
     <Stack.Screen name="Plats" component={PlatsScreen} />
   </Stack.Navigator>
 );
 
 const AppNavigator: React.FC = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray',
+        tabBarStyle: styles.tabBar,
+        tabBarLabelStyle: styles.tabLabel,
+      }}
+    >
       <Tab.Screen name="Client" component={ClientStack} />
       <Tab.Screen name="Maintenance" component={MaintenanceListScreen} />
       <Tab.Screen name="Teams" component={TeamListScreen} />
@@ -57,5 +85,25 @@ const AppNavigator: React.FC = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  tabBar: {
+    backgroundColor: 'white',
+    borderTopWidth: 0,
+    marginBottom: 20,
+    marginTop: 1,
+    height: 40,
+  },
+  tabLabel: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignItems: 'center',
+  
+  },
+});
+
+
+
 
 export default AppNavigator;

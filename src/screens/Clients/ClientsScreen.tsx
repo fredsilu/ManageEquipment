@@ -40,7 +40,7 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
       headerTintColor: '#fff', // white title color
       headerRight: () => (
       <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Ajouter Client')}>
+        <TouchableOpacity onPress={() => navigation.navigate('AjouterClient')}>
         <Ionicons name="add" size={25} color="#fff" style={{ marginRight: 15 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
@@ -77,7 +77,7 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={({ item }) => (
             <TouchableOpacity
             style={styles.clientContainer}
-            onPress={() => navigation.navigate('Details Client', { clientId: item.id })}
+            onPress={() => navigation.navigate('DetailsClient', { clientId: item.id })}
             >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image
@@ -97,7 +97,7 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
 
       <TouchableOpacity
         style={styles.addButton}
-        onPress={() => navigation.navigate('Ajouter Client')}
+        onPress={() => navigation.navigate('AjouterClient')}
       >
         <Text style={styles.addButtonText}>Ajouter Client</Text>
       </TouchableOpacity>

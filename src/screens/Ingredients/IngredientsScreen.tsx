@@ -1,25 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import api from '../../services/api';
-import { Ingredient } from  '../../types/types';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { Ingredient } from '../../types/types';
+import { NavigationProp } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
-type RootStackParamList = {
-  IngredientsList: undefined;
-  IngredientDetails: { ingredientId: string };
-};
-
-type IngredientsListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'IngredientsList'>;
-
-type Props = {
-  navigation: IngredientsListScreenNavigationProp;
-};
+interface Props {
+  navigation: NavigationProp<any>;
+}
 
 const IngredientsListScreen: React.FC<Props> = ({ navigation }) => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  
 
   useEffect(() => {
     const loadIngredients = async () => {
@@ -52,24 +46,28 @@ const IngredientsListScreen: React.FC<Props> = ({ navigation }) => {
     );
   }
 
+
   return (
     <View style={styles.container}>
       <FlatList
         data={ingredients}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.nom_ingredient}
         renderItem={({ item }) => (
           <TouchableOpacity
-            style={styles.ingredientContainer}
-            onPress={() => navigation.navigate('IngredientDetails', { ingredientId: item.id.toString() })}
-          >
-            
-            <Text style={styles.ingredientNameText}> {item.nom_ingredient}</Text>
-            <Text style={styles.ingredientText}>{item.categorie}</Text>
-            <Text style={styles.ingredientText}>Fournisseur: {item.fournisseur}</Text>
-            <Text style={styles.ingredientText}>Unité: {item.unite}</Text>
-            <Text style={styles.ingredientCoutText}>Coût unitaire: {item.cout_unitaire} $</Text>
-          </TouchableOpacity>
-        )}
+              style={styles.ingredientContainer}
+              onPress={() => navigation.navigate('DetailsIngredient', { ingredientId: item.id })}
+                    >
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                     
+                      <View>
+                      <Text style={styles.ingredientNameText}>Nom: {item.nom_ingredient}</Text>
+                      <Text style={styles.ingredientText}>id: {item.id}</Text>
+                        <Text style={styles.ingredientText}>Société: {item.fournisseur}</Text>
+                      <Text style={styles.ingredientCoutText}>Téléphone: {item.cout_unitaire}</Text>
+                      </View>
+                    </View>
+                    </TouchableOpacity>
+                )}
       />
     </View>
   );
@@ -98,8 +96,6 @@ const styles = StyleSheet.create({
     color: '#3BB700',
     fontWeight: 'bold',
   },
-
-  
 });
 
 export default IngredientsListScreen;

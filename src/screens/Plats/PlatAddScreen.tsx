@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import api from '../../services/api';
-
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Alert } from 'react-native';
+import { Ingredient, PlatIngredient } from '../../types/types';
+
+
 type RootStackParamList = {
     PlatAdd: undefined;
     // Add other routes here if needed
@@ -16,25 +18,15 @@ type Props = {
 
 };
 
-interface Ingredient {
-    id: string;
-    categorie: string;
-    nom_ingredient: string;
-    fournisseur: string;
-    unite: string;
-    cout_unitaire: number;
-}
-
-
 const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
 
     const [nom, setNom] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [prix, setPrix] = useState<string>('');
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [platIngredients, setPlatIngredients] = useState<{ ingredient_id: number; quantite: number }[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [platIngredients, setPlatIngredients] = useState<PlatIngredient[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const fetchIngredients = async () => {
@@ -52,15 +44,16 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
         fetchIngredients();
     }, []);
 
-
+    // pour ajouter un ingrédient à ce plat
     const addIngredientToPlat = (ingredientId: number) => {
         const ingredientExists = platIngredients.find(item => item.ingredient_id === ingredientId)
-        if(ingredientExists){
+        if (ingredientExists) {
             Alert.alert("Erreur", "Cet ingrédient a déjà été ajouté.")
             return;
         }
-        setPlatIngredients([...platIngredients, {ingredient_id: ingredientId, quantite: 1}])
+        setPlatIngredients([...platIngredients, { ingredient_id: ingredientId, quantite: 1, plat_id: 0, unite_quantite: '' }])
     }
+
     const updateIngredientQuantity = (ingredientId: number, quantity: number) => {
         setPlatIngredients(
             platIngredients.map((item) =>
@@ -71,7 +64,7 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
 
     const updatePlatPrix = () => {
         const totalPrix = platIngredients.reduce((total, platIngredient) => {
-            const ingredient = ingredients.find(ing => parseInt(ing.id) === platIngredient.ingredient_id);
+            const ingredient = ingredients.find(ing => ing.id === platIngredient.ingredient_id);
             if (ingredient) {
                 return total + (platIngredient.quantite * ingredient.cout_unitaire);
             }
@@ -83,7 +76,7 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
     useEffect(() => {
         updatePlatPrix();
     }, [platIngredients]);
-    
+
     const handleAddPlat = async () => {
         try {
             await api.createDish({ nom, description, prix: parseFloat(prix) });
@@ -114,20 +107,20 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
             <View style={styles.ingredientContainer}>
                 <Text>Ingrédient</Text>
                 <Text>Quantité</Text>
-            {platIngredients.map((platIngredient) => (
-                <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
-                    <Text>
-                        {ingredients.find((ing) => parseInt(ing.id) === platIngredient.ingredient_id)?.nom_ingredient}
-                    </Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Quantité"
-                        keyboardType="numeric"
-                        value={platIngredient.quantite.toString()}
-                        onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseInt(text))}
-                    />
-                </View>
-            ))}
+                {platIngredients.map((platIngredient) => (
+                    <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
+                        <Text>
+                            {ingredients.find((ing) => ing.id === platIngredient.ingredient_id)?.nom_ingredient}
+                        </Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Quantité"
+                            keyboardType="numeric"
+                            value={platIngredient.quantite.toString()}
+                            onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseInt(text))}
+                        />
+                    </View>
+                ))}
             </View>
 
 
@@ -148,11 +141,11 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     picker: {
-        height: 50,
+        height: 60,
         width: '100%',
     },
     input: {
-        height: 40,
+        height: 60,
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 12,
@@ -165,8 +158,9 @@ const styles = StyleSheet.create({
     ingredientContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: 25,
+        marginBottom: 10,
+        height: 150,
+        backgroundColor: 'blue',
     },
 });
 
