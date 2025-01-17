@@ -1,11 +1,19 @@
-import  { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import api, { Ingredient } from '../../services/api';
-import {  NavigationProp } from '@react-navigation/native';
+import { api, Ingredient } from '../../services/api';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 
-interface Props {
-  navigation: NavigationProp<any>;
-}
+type RootStackParamList = {
+  IngredientsList: undefined;
+  IngredientDetails: { ingredientId: string };
+};
+
+type IngredientsListScreenNavigationProp = StackNavigationProp<RootStackParamList, 'IngredientsList'>;
+
+type Props = {
+  navigation: IngredientsListScreenNavigationProp;
+};
 
 const IngredientsListScreen: React.FC<Props> = ({ navigation }) => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -47,7 +55,7 @@ const IngredientsListScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <FlatList
         data={ingredients}
-        keyExtractor={(item) => item.nom_ingredient}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.ingredientContainer}
@@ -61,12 +69,6 @@ const IngredientsListScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
         )}
       />
-       <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => navigation.navigate('ClientAdd')}
-            >
-              <Text style={styles.addButtonText}>Ajouter un client</Text>
-            </TouchableOpacity>
     </View>
   );
 };
@@ -76,17 +78,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  addButton: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
   ingredientContainer: {
     padding: 16,
     borderBottomWidth: 1,
@@ -95,8 +86,6 @@ const styles = StyleSheet.create({
   ingredientText: {
     fontSize: 16,
   },
-  
-
 });
 
 export default IngredientsListScreen;

@@ -12,15 +12,13 @@ import ClientAddScreen from '../screens/Clients/ClientAddScreen';
 import IngredientsListScreen from '../screens/Ingredients/IngredientsListScreen';
 import IngredientAddScreen from '../screens/Ingredients/IngredientAddScreen';
 import ClientDetailsScreen from '../screens/Clients/ClientDetailsScreen';
-import PlatsListScreen from '../screens/Plats/PlatsListScreen';
-import PlatAddScreen from '../screens/Plats/PlatAddScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const ClientStack = () => (
   <Stack.Navigator>
-   <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+   
     <Stack.Screen name="Liste des clients" component={ClientListScreen} />
     <Stack.Screen name="ClientDetailsScreen" component={ClientDetailsScreen} />
     <Stack.Screen name="Liste des équipements" component={EquipmentListScreen} />
@@ -29,9 +27,6 @@ const ClientStack = () => (
     <Stack.Screen name="ClientAdd" component={ClientAddScreen} />
     <Stack.Screen name="IngredientsList" component={IngredientsListScreen} />
     <Stack.Screen name="IngredientAdd" component={IngredientAddScreen} />
-    <Stack.Screen name="PlatsList" component={PlatsListScreen} /> 
-    <Stack.Screen name="PlatAdd" component={PlatAddScreen} /> 
-    
   </Stack.Navigator>
 );
 

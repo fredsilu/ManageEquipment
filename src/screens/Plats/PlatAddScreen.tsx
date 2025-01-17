@@ -33,7 +33,7 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
     const [description, setDescription] = useState<string>('');
     const [prix, setPrix] = useState<string>('');
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [platIngredients, setPlatIngredients] = useState<{ id: number; quantite: number }[]>([]);
+    const [platIngredients, setPlatIngredients] = useState<{ ingredient_id: number; quantite: number }[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -55,24 +55,24 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
 
 
     const addIngredientToPlat = (ingredientId: number) => {
-        const ingredientExists = platIngredients.find(item => item.id === ingredientId)
+        const ingredientExists = platIngredients.find(item => item.ingredient_id === ingredientId)
         if(ingredientExists){
             Alert.alert("Erreur", "Cet ingrédient a déjà été ajouté.")
             return;
         }
-        setPlatIngredients([...platIngredients, {id: ingredientId, quantite: 1}])
+        setPlatIngredients([...platIngredients, {ingredient_id: ingredientId, quantite: 1}])
     }
     const updateIngredientQuantity = (ingredientId: number, quantity: number) => {
         setPlatIngredients(
             platIngredients.map((item) =>
-                item.id === ingredientId ? { ...item, quantite: quantity } : item
+                item.ingredient_id === ingredientId ? { ...item, quantite: quantity } : item
             )
         );
     };
 
     const updatePlatPrix = () => {
         const totalPrix = platIngredients.reduce((total, platIngredient) => {
-            const ingredient = ingredients.find(ing => parseInt(ing.id) === platIngredient.id);
+            const ingredient = ingredients.find(ing => parseInt(ing.id) === platIngredient.ingredient_id);
             if (ingredient) {
                 return total + (platIngredient.quantite * ingredient.cout_unitaire);
             }
@@ -127,16 +127,16 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
                 ))}
             </Picker>
             {platIngredients.map((platIngredient) => (
-                <View key={platIngredient.id} style={styles.ingredientContainer}>
+                <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
                     <Text>
-                        {ingredients.find((ing) => parseInt(ing.id) === platIngredient.id)?.nom_ingredient}
+                        {ingredients.find((ing) => parseInt(ing.id) === platIngredient.ingredient_id)?.nom_ingredient}
                     </Text>
                     <TextInput
                         style={styles.input}
                         placeholder="Quantité"
                         keyboardType="numeric"
                         value={platIngredient.quantite.toString()}
-                        onChangeText={(text) => updateIngredientQuantity(platIngredient.id, parseInt(text))}
+                        onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseInt(text))}
                     />
                 </View>
             ))}
