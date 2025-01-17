@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import api from '../../services/api';
 
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -23,14 +24,6 @@ interface Ingredient {
     fournisseur: string;
     unite: string;
     cout_unitaire: number;
-}
-
-interface Plat {
-    id: string;
-    nom: string;
-    description: string;
-    ingredients: { id: number; quantite: number }[];
-    prix: number;
 }
 
 
@@ -76,6 +69,21 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
             )
         );
     };
+
+    const updatePlatPrix = () => {
+        const totalPrix = platIngredients.reduce((total, platIngredient) => {
+            const ingredient = ingredients.find(ing => parseInt(ing.id) === platIngredient.id);
+            if (ingredient) {
+                return total + (platIngredient.quantite * ingredient.cout_unitaire);
+            }
+            return total;
+        }, 0);
+        setPrix(totalPrix.toFixed(2).toString());
+    };
+
+    useEffect(() => {
+        updatePlatPrix();
+    }, [platIngredients]);
     
     const handleAddPlat = async () => {
         try {
@@ -103,6 +111,37 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
                 onChangeText={setDescription}
             />
 
+            <Text>Ingrédients</Text>
+            <Picker
+                selectedValue={null}
+                onValueChange={(itemValue) => {
+                    if (itemValue !== null) {
+                        addIngredientToPlat(parseInt(itemValue));
+                    }
+                }}
+                style={styles.picker}
+            >
+                <Picker.Item label="Sélectionner un ingrédient" value={null} />
+                {ingredients.map((ingredient) => (
+                    <Picker.Item key={ingredient.id} label={ingredient.nom_ingredient} value={ingredient.id} />
+                ))}
+            </Picker>
+            {platIngredients.map((platIngredient) => (
+                <View key={platIngredient.id} style={styles.ingredientContainer}>
+                    <Text>
+                        {ingredients.find((ing) => parseInt(ing.id) === platIngredient.id)?.nom_ingredient}
+                    </Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Quantité"
+                        keyboardType="numeric"
+                        value={platIngredient.quantite.toString()}
+                        onChangeText={(text) => updateIngredientQuantity(platIngredient.id, parseInt(text))}
+                    />
+                </View>
+            ))}
+
+
             <TextInput
                 style={styles.input}
                 placeholder="Coût unitaire"
@@ -119,6 +158,10 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
     },
+    picker: {
+        height: 50,
+        width: '100%',
+    },
     input: {
         height: 40,
         borderColor: 'gray',
@@ -129,6 +172,12 @@ const styles = StyleSheet.create({
     error: {
         color: 'red',
         marginBottom: 12,
+    },
+    ingredientContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 25,
     },
 });
 
