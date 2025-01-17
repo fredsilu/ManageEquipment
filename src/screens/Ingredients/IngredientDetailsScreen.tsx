@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { api, Ingredient } from '../../services/api';
+import api, { Ingredient } from '../../services/api';
 
 import { RouteProp } from '@react-navigation/native';
 

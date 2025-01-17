@@ -24,12 +24,15 @@ const ClientAddScreen: React.FC<Props> = ({ navigation }) => {
   const [error, setError] = useState<string | null>(null);
 
   const handleAddClient = async () => {
+    if (!nom_client.trim()) {
+      setError("Le nom du client est requis.");
+      return;
+    }
     try {
       await api.createClient({ nom_client, societe, telephone, email, adresse });
-      //Optionnel: Afficher une alerte
+      // Optionnel: Afficher une alerte
       Alert.alert("Succès", "Utilisateur ajouté avec succès !");
       navigation.goBack();
-      
     } catch (err) {
       setError("Erreur lors de l'ajout du client.");
     }
@@ -78,17 +81,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#f5f5f5',
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    height: 60,
+    borderColor: '#007BFF',
     borderWidth: 1,
     marginBottom: 12,
     paddingHorizontal: 8,
+    borderRadius: 4,
+    backgroundColor: '#fff',
   },
   error: {
     color: 'red',
     marginBottom: 12,
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    padding: 10,
+    borderRadius: 4,
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 

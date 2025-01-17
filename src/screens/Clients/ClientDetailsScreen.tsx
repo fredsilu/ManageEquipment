@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 import { RouteProp } from '@react-navigation/native';
+import { Button } from 'react-native';
 
 
 interface Client {
@@ -27,6 +28,10 @@ const ClientDetailsScreen: React.FC = () => {
   };
   
   const route = useRoute<RouteProp<RouteParams>>();
+  
+  const handleEditClient = () => {
+    // Logic to handle client edit
+  };
 
 
   useEffect(() => {
@@ -81,6 +86,12 @@ const ClientDetailsScreen: React.FC = () => {
         <Text style={styles.clientText}>Adresse: {data.adresse}</Text>
       </View>
       ))}
+
+      <Button
+        title="Modifier le client"
+        onPress={handleEditClient}
+        color="#841584"
+      />
     </View>
   );
 };

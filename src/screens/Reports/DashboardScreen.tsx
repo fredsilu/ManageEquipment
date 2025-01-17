@@ -12,7 +12,24 @@ const DashboardScreen = ({ navigation }: { navigation: NavigationProp<any> }) =>
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Dashboard</Text>
-            <Button title="Perform Maintenance" onPress={handleMaintenance} />
+     
+            <Button
+                title="Go to Client List"
+                onPress={() => navigation.navigate('Liste des clients')}
+                color="#841584"
+            />
+            <View style={{ margin: 10 }} />
+            <Button
+                title="Go to Ingredients List"
+                onPress={() => navigation.navigate('IngredientsList')}
+                color="#841584"
+            />
+            <View style={{ margin: 10 }} />
+            <Button
+                title="Go to Plats List"
+                onPress={() => navigation.navigate('PlatsList')}
+                color="#841584"
+            />
         </View>
     );
 };
@@ -20,14 +37,14 @@ const DashboardScreen = ({ navigation }: { navigation: NavigationProp<any> }) =>
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        padding: 20,
         alignItems: 'center',
         backgroundColor: '#f5f5f5',
     },
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        marginBottom: 20,
+       
     },
 });
 

@@ -53,13 +53,18 @@ const ClientListScreen: React.FC<Props> = ({ navigation }) => {
             style={styles.clientContainer}
             onPress={() => navigation.navigate('ClientDetailsScreen', { clientId: item.id })}
           >
-            <Text style={styles.clientText}>id: {item.id}</Text>
             <Text style={styles.clientText}>Nom: {item.nom_client}</Text>
             <Text style={styles.clientText}>Société: {item.societe}</Text>
-            <Text style={styles.clientText}>Téléphone: {item.telephone}</Text>
           </TouchableOpacity>
         )}
       />
+
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() => navigation.navigate('ClientAdd')}
+      >
+        <Text style={styles.addButtonText}>Ajouter un client</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -69,26 +74,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#f5f5f5',
   },
   clientContainer: {
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    backgroundColor: '#e0f7fa',
+    borderRadius: 8,
+    marginVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
   },
   clientText: {
     fontSize: 16,
+    color: '#333',
   },
-
   addButton: {
     backgroundColor: '#007bff',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
   },
   addButtonText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

@@ -23,6 +23,13 @@ export interface Ingredient {
   cout_unitaire: number;
 }
 
+export interface Plat {
+  id: string;
+  nom: string;
+  description: string;
+ prix: number;
+}
+
 
 export interface Client {
   id: string;
@@ -247,7 +254,7 @@ const api = {
   },
   fetchDishes: async (): Promise<any[]> => {
     try {
-      const response = await axios.get<any[]>(API_BASE_URL + 'dishes');
+      const response = await axios.get<any[]>(API_BASE_URL + 'plats');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
