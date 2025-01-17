@@ -1,0 +1,18 @@
+  <View style={styles.ingredientContainer}>
+                <Text>Ingrédient</Text>
+                <Text>Quantité</Text>
+                {platIngredients.map((platIngredient) => (
+                    <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
+                        <Text>
+                            {ingredients.find((ing) => ing.id === platIngredient.ingredient_id)?.nom_ingredient}
+                        </Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Quantité"
+                            keyboardType="numeric"
+                            value={platIngredient.quantite.toString()}
+                            onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseInt(text))}
+                        />
+                    </View>
+                ))}
+            </View>

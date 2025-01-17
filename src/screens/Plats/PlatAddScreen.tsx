@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
 import api from '../../services/api';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Alert } from 'react-native';
 import { Ingredient, PlatIngredient } from '../../types/types';
+//import { Picker } from '@react-native-picker/picker';
+import Picker from 'react-native-picker-select';
 
 
 type RootStackParamList = {
@@ -87,7 +89,7 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text>Ajouter un plat</Text>
             {error && <Text style={styles.error}>{error}</Text>}
             <TextInput
@@ -102,36 +104,40 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
                 value={description}
                 onChangeText={setDescription}
             />
+            <Picker
+                items={ingredients.map((ingredient) => ({
+                    label: ingredient.nom_ingredient,
+                    value: ingredient.id
+                }))}
+                value={null}
+                onValueChange={(itemValue) => {
+                    if (itemValue !== null) {
+                        addIngredientToPlat(itemValue as number);
+                    }
+                }}
+            />
 
-            <Text>Ingrédients</Text>
-            <View style={styles.ingredientContainer}>
-                <Text>Ingrédient</Text>
-                <Text>Quantité</Text>
-                {platIngredients.map((platIngredient) => (
+            {platIngredients.map((platIngredient) => {
+                const ingredient = ingredients.find(ing => ing.id === platIngredient.ingredient_id);
+                return (
                     <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
-                        <Text>
-                            {ingredients.find((ing) => ing.id === platIngredient.ingredient_id)?.nom_ingredient}
-                        </Text>
+                        <Text style={styles.inputI}>{ingredient?.nom_ingredient}</Text>
                         <TextInput
-                            style={styles.input}
+                            style={styles.inputQ}
                             placeholder="Quantité"
                             keyboardType="numeric"
                             value={platIngredient.quantite.toString()}
-                            onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseInt(text))}
+                            onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseFloat(text))}
                         />
                     </View>
-                ))}
+                );
+            })}
+            <Text style={styles.inputT}>Prix total : {prix} $</Text>
+
+            <View style={styles.buttonContainer}>
+                <Button title="Ajouter" onPress={handleAddPlat} />
             </View>
-
-
-            <TextInput
-                style={styles.input}
-                placeholder="Coût unitaire"
-                value={prix}
-                onChangeText={setPrix}
-            />
-            <Button title="Ajouter" onPress={handleAddPlat} />
-        </View>
+        </ScrollView>
     );
 };
 
@@ -140,14 +146,37 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
     },
+    
+    buttonContainer: {
+        marginBottom: 50,
+    },
     picker: {
-        height: 60,
         width: '100%',
     },
     input: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 12,
+        paddingHorizontal: 8,
+    },
+    inputI: {
+        height: 60,
+        marginBottom: 12,
+        paddingHorizontal: 8,
+    },
+    inputQ: {
+        height: 45,
+        paddingHorizontal: 8,
+        justifyContent: 'space-between',
+        marginEnd: 30,
+        fontSize: 15,
+    },
+    inputT: {
         height: 60,
         borderColor: 'gray',
         borderWidth: 1,
+        marginTop: 50,
         marginBottom: 12,
         paddingHorizontal: 8,
     },
@@ -158,9 +187,9 @@ const styles = StyleSheet.create({
     ingredientContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 10,
-        height: 150,
-        backgroundColor: 'blue',
+        marginBottom: 2,
+        height: 40,
+        backgroundColor: '#B0C4DE', // Lighter color
     },
 });
 

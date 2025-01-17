@@ -46,7 +46,7 @@ type ClientStackParamList = {
 const ClientStack = () => (
   <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-<Stack.Screen name="test" component={test} />
+
 
     <Stack.Screen name="TableauBord" component={DashboardScreen} />
 
