@@ -21,7 +21,8 @@ import IngredientAddScreen from '../screens/Ingredients/IngredientAddScreen';
 import IngredientDetailsScreen from '../screens/Ingredients/IngredientDetailsScreen';
 
 import PlatAddScreen from '../screens/Plats/PlatAddScreen';
-import PlatsScreen from '../screens/Plats/PlatsScreen';
+import PlatsScreen from '../screens/Plats/PlatsScreen';  
+import PlatDetailsScreen from '../screens/Plats/PlatDetailsScreen';
 
 import test from '../screens/Plats/test';
 
@@ -65,6 +66,7 @@ const ClientStack = () => (
 
     <Stack.Screen name="AjouterPlat" component={PlatAddScreen} />
     <Stack.Screen name="Plats" component={PlatsScreen} />
+    <Stack.Screen name="DetailsPlat" component={PlatDetailsScreen} />
   </Stack.Navigator>
 );
 

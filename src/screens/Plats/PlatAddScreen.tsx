@@ -4,6 +4,7 @@ import api from '../../services/api';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Alert } from 'react-native';
 import { Ingredient, PlatIngredient } from '../../types/types';
+import { MaterialIcons } from '@expo/vector-icons';
 //import { Picker } from '@react-native-picker/picker';
 import Picker from 'react-native-picker-select';
 
@@ -53,7 +54,7 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
             Alert.alert("Erreur", "Cet ingrédient a déjà été ajouté.")
             return;
         }
-        setPlatIngredients([...platIngredients, { ingredient_id: ingredientId, quantite: 1, plat_id: 0, unite_quantite: '' }])
+        setPlatIngredients([...platIngredients, { ingredient_id: ingredientId, quantite: 1, plat_id: 0, unite_quantite: ingredients.find(ing => ing.id === ingredientId)?.unite || '' }]);
     }
 
     const updateIngredientQuantity = (ingredientId: number, quantity: number) => {
@@ -80,18 +81,43 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
     }, [platIngredients]);
 
     const handleAddPlat = async () => {
+        if (!nom.trim()) {
+            setError("Le nom du plat ne peut pas être vide.");
+            return;
+        }
+
+        if (platIngredients.length === 0) {
+            setError("Le plat doit contenir au moins un ingrédient.");
+            return;
+        }
+
+        const platIngredientsValues = platIngredients.map(item => ({
+            ingredientId: item.ingredient_id,
+            quantite: item.quantite,
+            unite: item.unite_quantite
+        }));
+        
+        const platData = {
+            nom,
+            description,
+            prix: parseFloat(prix),
+            platIngredients: platIngredientsValues,
+        };
+        console.log(platData);
+
         try {
-            await api.createDish({ nom, description, prix: parseFloat(prix) });
+            await api.createDish(platData);
             navigation.goBack();
         } catch (err) {
             setError("Erreur lors de l'ajout du plat.");
         }
+
     };
 
     return (
         <ScrollView style={styles.container}>
             <Text>Ajouter un plat</Text>
-            {error && <Text style={styles.error}>{error}</Text>}
+            <Text style={styles.error}>{error}</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Nom"
@@ -122,12 +148,21 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
                 return (
                     <View key={platIngredient.ingredient_id} style={styles.ingredientContainer}>
                         <Text style={styles.inputI}>{ingredient?.nom_ingredient}</Text>
+                        <Text style={styles.inputI}>({ingredient?.unite})</Text>
                         <TextInput
                             style={styles.inputQ}
                             placeholder="Quantité"
                             keyboardType="numeric"
                             value={platIngredient.quantite.toString()}
                             onChangeText={(text) => updateIngredientQuantity(platIngredient.ingredient_id, parseFloat(text))}
+                        />
+                        <MaterialIcons
+                            name="delete"
+                            size={24}
+                            color="grey"
+                            onPress={() => {
+                                setPlatIngredients(platIngredients.filter(item => item.ingredient_id !== platIngredient.ingredient_id));
+                            }}
                         />
                     </View>
                 );
@@ -142,9 +177,29 @@ const PlatAddScreen: React.FC<Props> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+    container: { //le scrollview
         flex: 1,
         padding: 16,
+    },
+    ingredientContainer: {  // le container de chaque ingredient : nom - quantite - bouton delete
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 2,
+        height: 40,
+        backgroundColor: '#B0C4DE', // Lighter color
+    },
+    inputI: {  // le style pour le nom de l'ingredient
+        flex : 3,
+        height: 60,
+        marginBottom: 12,
+        paddingHorizontal: 8,
+    },
+    inputQ: {  //le style pour la quantité de l'ingrédient
+        flex : 1,
+        height: 45,
+        paddingHorizontal: 8,
+        fontSize: 15,
+        alignContent: 'flex-end',
     },
     
     buttonContainer: {
@@ -160,18 +215,8 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         paddingHorizontal: 8,
     },
-    inputI: {
-        height: 60,
-        marginBottom: 12,
-        paddingHorizontal: 8,
-    },
-    inputQ: {
-        height: 45,
-        paddingHorizontal: 8,
-        justifyContent: 'space-between',
-        marginEnd: 30,
-        fontSize: 15,
-    },
+   
+   
     inputT: {
         height: 60,
         borderColor: 'gray',
@@ -184,13 +229,7 @@ const styles = StyleSheet.create({
         color: 'red',
         marginBottom: 12,
     },
-    ingredientContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 2,
-        height: 40,
-        backgroundColor: '#B0C4DE', // Lighter color
-    },
+   
 });
 
 export default PlatAddScreen;

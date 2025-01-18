@@ -70,7 +70,7 @@ const PlatsListScreen: React.FC<Props> = ({ navigation }) => {
                 renderItem={({ item }) => (
                         <TouchableOpacity
                         style={styles.platContainer}
-                        onPress={() => navigation.navigate('PlatDetailsScreen', { platId: item.id })}
+                        onPress={() => navigation.navigate('DetailsPlat', { platId: item.id })}
                         >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Image
@@ -79,7 +79,6 @@ const PlatsListScreen: React.FC<Props> = ({ navigation }) => {
                             />
                             <View>
                             <Text style={styles.platName}>{item.nom}</Text>
-                            <Text style={styles.platText}>Réf: {item.id}</Text>
                             <Text style={styles.platText}>{item.description}</Text>
                             <Text style={styles.platPrixText}>{item.prix} $</Text>
                             </View>

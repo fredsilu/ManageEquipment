@@ -4,7 +4,8 @@ import { useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 import { RouteProp } from '@react-navigation/native';
 import { ReactNode } from 'react';
-import {Client} from '../../types/types'
+import { Client } from '../../types/types'
+import CustomButton from '../../components/CustomButton';
 
 
 
@@ -13,13 +14,13 @@ const ClientDetailsScreen: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  
+
   type RouteParams = {
     params: {
       clientId: string;
     };
   };
-  
+
   const route = useRoute<RouteProp<RouteParams>>();
 
 
@@ -66,15 +67,23 @@ const ClientDetailsScreen: React.FC = () => {
 
     <View style={styles.container}>
       {client.map((data: Client) => (
-      <View key={data.id} style={styles.clientContainer}>
-        <Text style={styles.clientText}>ID: {data.id}</Text>
-        <Text style={styles.clientText}>Nom: {data.nom_client}</Text>
-        <Text style={styles.clientText}>Société: {data.societe}</Text>
-        <Text style={styles.clientText}>Téléphone: {data.telephone}</Text>
-        <Text style={styles.clientText}>Email: {data.email}</Text>
-        <Text style={styles.clientText}>Adresse: {data.adresse}</Text>
-      </View>
+        <View key={data.id} style={styles.clientContainer}>
+          <Text style={styles.clientText}>ID: {data.id}</Text>
+          <Text style={styles.clientText}>Nom: {data.nom_client}</Text>
+          <Text style={styles.clientText}>Société: {data.societe}</Text>
+          <Text style={styles.clientText}>Téléphone: {data.telephone}</Text>
+          <Text style={styles.clientText}>Email: {data.email}</Text>
+          <Text style={styles.clientText}>Adresse: {data.adresse}</Text>
+        </View>
       ))}
+      <View style={styles.buttonContainer}>
+        <View >
+          <CustomButton title="Modifier" style={styles.buttonText} onPress={() => { /* Add your delete logic here */ }} />
+        </View>
+        <View>
+          <CustomButton title="Supprimer" style={styles.button} onPress={() => { /* Add your delete logic here */ }} />
+        </View>
+      </View>
     </View>
   );
 };
@@ -102,6 +111,24 @@ const styles = StyleSheet.create({
   clientText: {
     fontSize: 16,
     color: '#333',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
+  },
+  button: {
+    flex: 1,
+    padding: 10,
+    marginHorizontal: 5,
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    backgroundColor: '#007BFF',
   },
 });
 

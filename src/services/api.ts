@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import { Alert } from 'react-native';
-import { Client } from '../types/types';
+import { Client, Commande, Traiteur, User } from '../types/types';
 import { Ingredient } from '../types/types';
+import { Plat } from '../types/types';
 
 const API_BASE_URL = 'http://192.168.1.66/api/'; // URL de votre API
 
@@ -107,9 +108,9 @@ const api = {
       throw error;
     }
   },
-  fetchIngredientDetails: async (ingredientId: string): Promise<any> => {
+  fetchIngredientDetails: async (ingredientId: string): Promise<Ingredient> => {
     try {
-      const response = await axios.get<any>(API_BASE_URL + `ingredients/${ingredientId}`);
+      const response = await axios.get<Ingredient>(API_BASE_URL + `ingredients/${ingredientId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -120,9 +121,9 @@ const api = {
   },
 
 
-  fetchCommandes: async (): Promise<any[]> => {
+  fetchCommandes: async (): Promise<Commande[]> => {
     try {
-      const response = await axios.get<any[]>(API_BASE_URL + 'commandes');
+      const response = await axios.get<Commande[]>(API_BASE_URL + 'commandes');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -131,9 +132,9 @@ const api = {
       throw error;
     }
   },
-  fetchCommandesDetails: async (commandesId: string): Promise<any> => {
+  fetchCommandesDetails: async (commandesId: string): Promise<Commande> => {
     try {
-      const response = await axios.get<any>(API_BASE_URL + `commandes/${commandesId}`);
+      const response = await axios.get<Commande>(API_BASE_URL + `commandes/${commandesId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -142,9 +143,9 @@ const api = {
       throw error;
     }
   },
-  createCommandes: async (commandesData: any): Promise<any> => {
+  createCommandes: async (commandesData: Commande): Promise<Commande> => {
     try {
-      const response = await axios.post<any>(API_BASE_URL + 'commandes', commandesData);
+      const response = await axios.post<Commande>(API_BASE_URL + 'commandes', commandesData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -153,9 +154,9 @@ const api = {
       throw error;
     }
   },
-  updateCommandes: async (commandesData: any): Promise<any> => {
+  updateCommandes: async (commandesData: Commande): Promise<Commande> => {
     try {
-      const response = await axios.put<any>(API_BASE_URL + `commandes?id=${commandesData.id}`, commandesData);
+      const response = await axios.put<Commande>(API_BASE_URL + `commandes?id=${commandesData.id}`, commandesData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -174,9 +175,9 @@ const api = {
       throw error;
     }
   },
-  fetchDishes: async (): Promise<any[]> => {
+  fetchDishes: async (): Promise<Plat[]> => {
     try {
-      const response = await axios.get<any[]>(API_BASE_URL + 'plats');
+      const response = await axios.get<Plat[]>(API_BASE_URL + 'plats');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -185,9 +186,10 @@ const api = {
       throw error;
     }
   },
-  fetchDishDetails: async (dishId: string): Promise<any> => {
+  fetchDishDetails: async (dishId: string): Promise<Plat> => {
     try {
-      const response = await axios.get<any>(API_BASE_URL + `plats/${dishId}`);
+   
+      const response = await axios.get<Plat>(API_BASE_URL + `plats/${dishId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -196,10 +198,12 @@ const api = {
       throw error;
     }
   },
-  createDish: async (dishData: any): Promise<any> => {
+  createDish: async (dishData: Plat): Promise<Plat> => {
     try {
-      const response = await axios.post<any>(API_BASE_URL + 'plats', dishData);
+      const response = await axios.post<Plat>(API_BASE_URL + 'plats', dishData);
+      
       return response.data;
+
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error("Erreur createDish:", axiosError.message);
@@ -207,9 +211,9 @@ const api = {
       throw error;
     }
   },
-  updateDish: async (dishData: any): Promise<any> => {
+  updateDish: async (dishData: Plat): Promise<Plat> => {
     try {
-      const response = await axios.put<any>(API_BASE_URL + `plats?id=${dishData.id}`, dishData);
+      const response = await axios.put<Plat>(API_BASE_URL + `plats?id=${dishData.id}`, dishData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -228,9 +232,9 @@ const api = {
       throw error;
     }
   },
-  fetchCaterers: async (): Promise<any[]> => {
+  fetchCaterers: async (): Promise<Traiteur[]> => {
     try {
-      const response = await axios.get<any[]>(API_BASE_URL + 'traiteurs');
+      const response = await axios.get<Traiteur[]>(API_BASE_URL + 'traiteurs');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -239,9 +243,9 @@ const api = {
       throw error;
     }
   },
-  fetchCatererDetails: async (catererId: string): Promise<any> => {
+  fetchCatererDetails: async (catererId: string): Promise<Traiteur> => {
     try {
-      const response = await axios.get<any>(API_BASE_URL + `traiteurs/${catererId}`);
+      const response = await axios.get<Traiteur>(API_BASE_URL + `traiteurs/${catererId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -250,9 +254,9 @@ const api = {
       throw error;
     }
   },
-  createCaterer: async (catererData: any): Promise<any> => {
+  createCaterer: async (catererData: Traiteur): Promise<Traiteur> => {
     try {
-      const response = await axios.post<any>(API_BASE_URL + 'traiteurs', catererData);
+      const response = await axios.post<Traiteur>(API_BASE_URL + 'traiteurs', catererData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -261,9 +265,9 @@ const api = {
       throw error;
     }
   },
-  updateCaterer: async (catererData: any): Promise<any> => {
+  updateCaterer: async (catererData: Traiteur): Promise<Traiteur> => {
     try {
-      const response = await axios.put<any>(API_BASE_URL + `traiteurs?id=${catererData.id}`, catererData);
+      const response = await axios.put<Traiteur>(API_BASE_URL + `traiteurs?id=${catererData.id}`, catererData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -282,9 +286,9 @@ const api = {
       throw error;
     }
   },
-  fetchUsers: async (): Promise<any[]> => {
+  fetchUsers: async (): Promise<User[]> => {
     try {
-      const response = await axios.get<any[]>(API_BASE_URL + 'users');
+      const response = await axios.get<User[]>(API_BASE_URL + 'users');
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -293,9 +297,9 @@ const api = {
       throw error;
     }
   },
-  fetchUserDetails: async (userId: string): Promise<any> => {
+  fetchUserDetails: async (userId: string): Promise<User> => {
     try {
-      const response = await axios.get<any>(API_BASE_URL + `users/${userId}`);
+      const response = await axios.get<User>(API_BASE_URL + `users/${userId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -304,9 +308,9 @@ const api = {
       throw error;
     }
   },
-  createUser: async (userData: any): Promise<any> => {
+  createUser: async (userData: User): Promise<User> => {
     try {
-      const response = await axios.post<any>(API_BASE_URL + 'users', userData);
+      const response = await axios.post<User>(API_BASE_URL + 'users', userData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -315,9 +319,9 @@ const api = {
       throw error;
     }
   },
-  updateUser: async (userData: any): Promise<any> => {
+  updateUser: async (userData: User): Promise<User> => {
     try {
-      const response = await axios.put<any>(API_BASE_URL + `users?id=${userData.id}`, userData);
+      const response = await axios.put<User>(API_BASE_URL + `users?id=${userData.id}`, userData);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;

@@ -406,3 +406,44 @@ const api = {
         try {
             const response = await fetch(`${API_BASE_
 
+Array
+
+(
+
+    [description] => Ghh
+
+    [nom] => Ytrgyt
+
+    [platIngredients] => Array
+
+        (
+
+            [0] => Array
+
+                (
+
+                    [ingredientId] => 204
+
+                    [quantite] => 1
+
+                    [unite] => pc
+
+                )
+
+            [1] => Array
+
+                (
+
+                    [ingredientId] => 200
+
+                    [quantite] => 1
+
+                    [unite] => kg
+
+                )
+
+        )
+
+    [prix] => 6.6
+
+)

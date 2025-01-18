@@ -47,6 +47,24 @@ export interface Commande {
   prix_total: number;
 }
 
+export interface Traiteur {
+  id: number;
+  client_id: number;
+  commande_id: number;
+  plat_id: number;
+  quantite: number;
+  prix: number;
+}
+
+
+export interface User
+{
+  id: number;
+  nom: string;
+  email: string;    
+  username: string; 
+  password: string; 
+}
 export interface CommandePlat {
   commande_id: number;
   plat_id: number;
@@ -65,4 +83,11 @@ export interface RootStackParamList extends ParamListBase {
 
   DetailsIngredient: { itemId: string };
 
+}
+
+
+export interface ButtonProps {
+  title: string;
+  onPress: () => void;
+  style?: any; // Pour personnaliser les styles
 }

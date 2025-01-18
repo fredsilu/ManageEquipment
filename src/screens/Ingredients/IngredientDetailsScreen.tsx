@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import api from '../../services/api';
 import { RouteProp } from '@react-navigation/native';
@@ -69,6 +69,11 @@ const IngredientDetailsScreen: React.FC = () => {
           <Text>Coût unitaire: {data.cout_unitaire}</Text>
         </View>
       ))}
+
+      <View style={styles.buttonContainer}>
+        <Button title="Modifier" onPress={() => { /* Logique de modification */ }} />
+        <Button title="Supprimer" onPress={() => { /* Logique de suppression */ }} />
+      </View>
     </View>
   );
 };
@@ -89,6 +94,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 5,
     transform: [{ perspective: 1000 }],
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 16,
   },
 });
 
