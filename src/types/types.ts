@@ -21,10 +21,13 @@ export interface Plat {
 }
 
 export interface PlatIngredient {
-  plat_id: number;
+  plat_id: string;
   ingredient_id: number;
+  nom_ingredient: string;
+  categorie: string;
   quantite: number;
   unite_quantite: string;
+  cout_unitaire: number;
 }
 
 export interface Client {
