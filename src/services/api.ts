@@ -4,7 +4,7 @@ import { Client, Commande, Traiteur, User } from '../types/types';
 import { Ingredient } from '../types/types';
 import { Plat } from '../types/types';
 
-const API_BASE_URL = 'http://192.168.1.67/api/'; // URL de votre API
+const API_BASE_URL = 'http://192.168.1.66/api/'; // URL de votre API
 
 
 const api = {
@@ -68,17 +68,6 @@ const api = {
   fetchIngredients: async (): Promise<Ingredient[]> => {
     try {
       const response = await axios.get<Ingredient[]>(API_BASE_URL + 'ingredients');
-      return response.data;
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Erreur fetchIngredients:", axiosError.message);
-      Alert.alert("Erreur de chargement", axiosError.message);
-      throw error;
-    }
-  },
-  fetchPlatIngredients: async (platId: string): Promise<any[]> =>{
-    try {
-      const response = await axios.get<any[]>(API_BASE_URL + `plats_ingredients/${platId}`);
       return response.data;
     } catch (error) {
       const axiosError = error as AxiosError;
@@ -199,6 +188,7 @@ const api = {
   },
   fetchDishDetails: async (dishId: string): Promise<Plat> => {
     try {
+   
       const response = await axios.get<Plat>(API_BASE_URL + `plats/${dishId}`);
       return response.data;
     } catch (error) {

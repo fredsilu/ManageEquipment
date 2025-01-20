@@ -18,6 +18,7 @@ type PlatAddScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Plat
 
 type Props = {
     navigation: PlatAddScreenNavigationProp;
+
 };
 
 const PlatAddScreen: React.FC<Props> = ({ navigation }) => {

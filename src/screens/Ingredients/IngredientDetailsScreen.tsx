@@ -7,6 +7,7 @@ import { ReactNode } from 'react';
 import { Ingredient } from '../../types/types'
 
 
+
 const IngredientDetailsScreen: React.FC = () => {
   const [ingredient, setIngredient] = useState<Ingredient>();
   const [loading, setLoading] = useState<boolean>(true);
