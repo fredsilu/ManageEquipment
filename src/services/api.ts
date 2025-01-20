@@ -4,7 +4,7 @@ import { Client, Commande, Traiteur, User } from '../types/types';
 import { Ingredient } from '../types/types';
 import { Plat } from '../types/types';
 
-const API_BASE_URL = 'http://192.168.1.66/api/'; // URL de votre API
+const API_BASE_URL = 'http://192.168.1.67/api/'; // URL de votre API
 
 
 const api = {
