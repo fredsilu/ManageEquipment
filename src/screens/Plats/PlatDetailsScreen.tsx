@@ -1,115 +1,135 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { View, Text, TextInput, Button, StyleSheet, Picker, FlatList, TouchableOpacity } from 'react-native';
+import { useRoute, RouteProp } from '@react-navigation/native';
 import api from '../../services/api';
-import { RouteProp } from '@react-navigation/native';
-import { Plat } from '../../types/types';
+import {Ingredient, PlatIngredient,Plat} from '../../types/types';
+
+type RouteParams = {
+  params: {
+    platId: string;
+  };
+};
 
 const PlatDetailsScreen: React.FC = () => {
-    const [plat, setPlat] = useState<Plat>();
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+  const route = useRoute<RouteProp<RouteParams>>();
+  const [plat, setPlat] = useState<Plat | null>(null);
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [platIngredients, setPlatIngredients] = useState<PlatIngredient[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-    type RouteParams = {
-        params: {
-            platId: string;
-        };
+  useEffect(() => {
+    const fetchPlatDetails = async () => {
+      try {
+        const platData = await api.fetchPlatDetails(route.params.platId);
+        const ingredientsData = await api.fetchIngredients();
+        const platIngredientsData = await api.fetchPlatIngredients(route.params.platId);
+        setPlat(platData);
+        setIngredients(ingredientsData);
+        setPlatIngredients(platIngredientsData);
+      } catch (err) {
+        setError("Erreur lors du chargement des détails du plat.");
+      } finally {
+        setLoading(false);
+      }
     };
+    fetchPlatDetails();
+  }, [route.params.platId]);
 
-    const route = useRoute<RouteProp<RouteParams>>();
-
-    useEffect(() => {
-        const loadPlat = async () => {
-            try {
-                const platId = route.params?.platId;
-                const data = await api.fetchDishDetails(platId);
-                setPlat(data);
-            } catch (err) {
-                setError("Erreur lors du chargement des détails du plat.");
-            } finally {
-                setLoading(false);
-            }
-        };
-        loadPlat();
-    }, []);
-
-    if (loading) {
-        return (
-            <View style={styles.container}>
-                <Text>Chargement...</Text>
-            </View>
-        );
+  const handleUpdatePlat = async () => {
+    try {
+      if (plat) {
+        await api.updatePlat(plat);
+      } else {
+        alert("Plat non trouvé");
+      }
+      alert("Plat mis à jour avec succès");
+    } catch (err) {
+      alert("Erreur lors de la mise à jour du plat");
     }
+  };
 
-    if (error) {
-        return <Text>{error}</Text>;
+  const handleDeleteIngredient = async (ingredientId: string) => {
+    try {
+      await api.deletePlatIngredient(route.params.platId, ingredientId);
+      setPlatIngredients(platIngredients.filter(pi => pi.ingredient_id !== ingredientId));
+      alert("Ingrédient supprimé avec succès");
+    } catch (err) {
+      alert("Erreur lors de la suppression de l'ingrédient");
     }
+  };
 
-    if (!plat) {
-        return (
-            <View style={styles.container}>
-                <Text>Aucun plat trouvé.</Text>
-            </View>
-        );
-    }
-
+  if (loading) {
     return (
-
-        <View style={styles.container}>
-            {plat.map((data: Plat) => (
-                <View key={data.id} style={styles.platContainer}>
-                    <Text>Nom: {data.nom}</Text>
-                    <Text>Description: {data.description}</Text>
-                    <Text>Prix: {data.prix}</Text>
-                </View>
-            ))}
-            <View style={styles.buttonContainer}>
-                <View style={styles.button}>
-                    <Text style={styles.buttonText}>Modifier</Text>
-                </View>
-                <View style={styles.button}>
-                    <Text style={styles.buttonText}>Supprimer</Text>
-                </View>
-            </View>
-        </View>
+      <View style={styles.container}>
+        <Text>Chargement...</Text>
+      </View>
     );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      {plat && plat.map((platData: Plat) => (
+        <>
+          <Text>Nom:</Text>
+          <TextInput
+            style={styles.input}
+            value={platData.nom}
+            onChangeText={(text) => setPlat({ ...platData, nom: text })}
+          />
+          <Text>Description:</Text>
+          <TextInput
+            style={styles.input}
+            value={platData.description}
+            onChangeText={(text) => setPlat({ ...platData, description: text })}
+          />
+          <Button title="Mettre à jour" onPress={handleUpdatePlat} />
+        </>
+      ))}
+      <Text>Ingrédients:</Text>
+      <FlatList
+        data={platIngredients}
+        keyExtractor={(item) => item.ingredient_id.toString()}
+        renderItem={({ item }) => {
+          const ingredient = ingredients.find(ing => ing.id === item.ingredient_id);
+          return (
+            <View style={styles.ingredientContainer}>
+              <Text>{ingredient?.nom_ingredient}</Text>
+              <Text>Quantité: {item.quantite} {item.unite_quantite}</Text>
+              <Button title="Supprimer" onPress={() => handleDeleteIngredient(item.ingredient_id)} />
+            </View>
+          );
+        }}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
-    platContainer: {
-        padding: 16,
-        marginVertical: 8,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.8,
-        shadowRadius: 2,
-        elevation: 5,
-        transform: [{ perspective: 1000 }],
-    
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 16,
-    },
-    button: {
-        flex: 1,
-        padding: 10,
-        marginHorizontal: 5,
-        backgroundColor: '#007BFF',
-        borderRadius: 5,
-        alignItems: 'center',
-    },
-    buttonText: {
-        color: '#fff',
-        fontWeight: 'bold',
-    },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+  ingredientContainer: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
 });
 
 export default PlatDetailsScreen;

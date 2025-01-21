@@ -3,7 +3,7 @@ import { ParamListBase } from '@react-navigation/native';
 
 
 export interface Ingredient {
-  id: number;
+  id: string;
   categorie: string;
   nom_ingredient: string;
   fournisseur: string;
@@ -13,7 +13,7 @@ export interface Ingredient {
 }
 
 export interface Plat {
-  id: number;
+  id: string;
   nom: string;
   description: string;
   prix: number;
@@ -21,8 +21,8 @@ export interface Plat {
 }
 
 export interface PlatIngredient {
-  plat_id: number;
-  ingredient_id: number;
+  plat_id: string;
+  ingredient_id: string;
   quantite: number;
   unite_quantite: string;
 }

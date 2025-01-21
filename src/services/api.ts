@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { Client, Commande, Traiteur, User } from '../types/types';
 import { Ingredient } from '../types/types';
 import { Plat } from '../types/types';
+import { PlatIngredient } from '../types/types';
 
 const API_BASE_URL = 'http://192.168.1.67/api/'; // URL de votre API
 
@@ -339,12 +340,30 @@ const api = {
       Alert.alert("Erreur de suppression", axiosError.message);
       throw error;
     }
-  }
+  },
 
-
-
-
-
+  fetchPlatDetails: async (platId: string): Promise<Plat> => {
+    try {
+      
+      const response = await axios.get<Plat>(API_BASE_URL + `plats/${platId}`);
+      return response.data;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      console.error("Erreur fetchClientDetails:", axiosError.message);
+      Alert.alert("Erreur de chargement", axiosError.message);
+      throw error;
+    }
+  }, 
+  fetchPlatIngredients: async (platId: string): Promise<PlatIngredient[]> => {
+    const response = await axios.get(API_BASE_URL +`plats_ingredients/${platId}`);
+    return response.data;
+  },
+  updatePlat: async (plat: Plat): Promise<void> => {
+    await axios.put(API_BASE_URL + `plats/${plat.id}`, plat);
+  },
+  deletePlatIngredient: async (platId: string, ingredientId: string): Promise<void> => {
+    await axios.delete(API_BASE_URL + `plats/${platId}/ingredients/${ingredientId}`);
+  },
 };
 
 
